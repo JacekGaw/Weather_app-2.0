@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap');
+@import './variables';
+
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100vh;
+    width: 100%;
+    font-size: 18px;
+    font-family: 'EB Garamond', serif;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__logo {
+        width: 120px;
+        height: auto;
+        margin: 20px 0 10px 0;
+    }
+    &__search{
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        &-input {
+            width: 80%;
+            border: none;
+            border-bottom: 2px solid $grey-light;
+            padding: 5px;
+            font-size: 0.7rem;
+            color: $grey;
+            font-weight: 400;
+
+            &::placeholder {
+                color: $grey;
+                font-weight: 400;
+            }
+        }
+        &-button {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-bottom: 2px solid $grey-light;
+            background-color: rgba(250,250,250,0);
+            background-image: url('..//img/icons/magnifying-glass-solid.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            background-size: 50%;
+        }
+    }
+}
