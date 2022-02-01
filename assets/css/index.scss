@@ -77,12 +77,75 @@ html, body {
     }
 }
 
+.start {
+    width: 100%;
+    min-height: 75vh;
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+        width: 100%;
+        display: block;
+        font-size: 1.5rem;
+        text-align: center;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+        @media screen and (min-width:700px) {
+            font-size: 1.7rem;
+        }
+        @media screen and (min-width:1400px) {
+            font-size: 2.5rem;
+        }
+
+        span {
+            display: block;
+            font-size: 2rem;
+            color: $blue;
+            @media screen and (min-width:700px) {
+                display:inline-block;
+                font-size: 2.2rem;
+            }
+            @media screen and (min-width:1400px) {
+                font-size: 3rem;
+            }
+        }
+        ::before {
+            position:absolute;
+            content: "";
+            width: 70%;
+            height: 3px;
+            background-color: $grey-light;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            @media screen and (min-width:1000px) {
+                width: 50%;
+            }
+            @media screen and (min-width:1400px) {
+                width: 30%;
+            }
+        }
+    }
+    h3 {
+        width: 70%;
+        font-weight: 400;
+        color: $grey;
+        font-size: 1rem;
+        text-align: center;
+    }
+}
+
 .container {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    display: none;
     @media screen and (min-width: 1200px) {
         flex-direction: row;
         margin: 5%;
