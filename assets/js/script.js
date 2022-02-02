@@ -15,14 +15,13 @@ const currentLocationPlaceholder = document.querySelector(".current__location");
 
 window.onload = (e) => {
     console.log("ready");
-    getUserLocation();
+    localStorage.length > 0 ? console.log(localStorage.City) : getUserLocation();
+    // getUserLocation();
 }
 
 const getUserLocation = () => {
-    navigator.geolocation ? 
-    navigator.geolocation.getCurrentPosition(getCords) :
-    console.log("Unable to get Location");
-}
+    navigator.geolocation ? navigator.geolocation.getCurrentPosition(getCords) : console.log(" ");
+};
 
 const getCords = position => {
     const latitude = position.coords.latitude;
@@ -32,12 +31,24 @@ const getCords = position => {
 
 const geoCode = async (latitude,longitude) => {
     const response = await fetch(`http://api.positionstack.com/v1/reverse?access_key=${geoCodeAppId}&query=${latitude},${longitude}&output=json&limit=1`)
-    .then(response => response.json())
+    .then(response => {
+        if(response.ok){
+            return response.json();
+        }
+        else {
+            throw new Error("Something went wrong!");
+        }})
     .then(responseJSON => {
         console.log(responseJSON.data[0].locality);
-    });
+        localStorage['City'] = responseJSON.data[0].locality;
+        if(responseJSON.data[0].locality == undefined){
+            throw new Error("Coudn't get your Location");
+        }
+    })
+    .catch(error => {
+        console.log(error);
+    })
 }
-
 
 
 
