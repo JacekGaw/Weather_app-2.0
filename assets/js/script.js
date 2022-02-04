@@ -4,6 +4,7 @@ const currentLocationPlaceholder = document.querySelector(".current__location");
 const output = document.querySelector(".output__info");
 const input = document.querySelector(".header__search-input");
 const loader = document.querySelector(".output__loader");
+const submit = document.querySelector(".header__search-button");
 
 
 const body = document.querySelector("main");
@@ -50,7 +51,29 @@ const geoCode = async (latitude,longitude) => {
     loader.style.display = "none";
 }
 
+submit.addEventListener('click', () => {
+    fetchWeather(input.value);
+    event.preventDefault();
+});
 
+const fetchWeather = async (location) => {
+    const response = await fetch(`api.openweathermap.org/data/2.5/weather?q=${location}&appid=${weatherAppId}`)
+    .then(response => {
+        if(response.ok){
+            return response.json();
+        }
+        else {
+            throw new Error;
+        }
+    })
+    .then(responseJSON => {
+        console.log(responseJSON);
+    })
+    .catch(error => {
+        console.log(error);
+        output.innerHTML = error;
+    })
+}
 
 
 
