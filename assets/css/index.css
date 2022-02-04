@@ -26,6 +26,7 @@ html, body {
       -ms-flex-align: center;
           align-items: center;
   margin-bottom: 50px;
+  position: relative;
 }
 
 .header__logo {
@@ -109,12 +110,74 @@ html, body {
   background-position: center;
   background-size: contain;
   background-size: 50%;
+  cursor: pointer;
 }
 
 @media screen and (min-width: 1200px) {
   .header__search-button {
     height: 40px;
     width: 40px;
+  }
+}
+
+.header .output {
+  position: absolute;
+  top: 100%;
+  margin-top: 20px;
+}
+
+.header .output__info {
+  color: #FF0000;
+  font-size: 0.9rem;
+}
+
+.header .output__loader {
+  position: absolute;
+  top: 100%;
+  display: none;
+  text-align: center;
+}
+
+.header .output__loader img {
+  width: 40px;
+  height: 40px;
+  -webkit-animation-duration: 1.5s;
+          animation-duration: 1.5s;
+  -webkit-animation-name: loader;
+          animation-name: loader;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+          animation-timing-function: linear;
+}
+
+@-webkit-keyframes loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg) scale(1.3);
+            transform: rotate(180deg) scale(1.3);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg) scale(1.3);
+            transform: rotate(180deg) scale(1.3);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
   }
 }
 

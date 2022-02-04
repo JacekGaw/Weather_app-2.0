@@ -14,9 +14,15 @@
             <text id="WTHR.APP" transform="translate(0 47)" fill="#407ac5" font-size="55" font-family="Garamond-Bold, Garamond" font-weight="700"><tspan x="0" y="0">WTHR</tspan><tspan y="0" fill="#000">.APP</tspan></text>
             </g>
         </svg>
-        <div class="header__search">
+        <form class="header__search">
             <input type="text" class="header__search-input" placeholder="search city">
-            <input type="button" class="header__search-button" value="">
+            <input type="submit" class="header__search-button" value="">
+        </form>
+        <div class="output">
+            <div class="output__loader">
+                <img src="./assets/img/icons/spinner-solid.svg" alt="loading">
+            </div>
+            <h5 class="output__info"></h5>
         </div>
     </header>
     <section class="start">
