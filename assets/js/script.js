@@ -89,6 +89,8 @@ submit.addEventListener('click', (event) => {
     event.preventDefault();
 });
 
+
+
 // const getCity = async (latitude, longitude) => {
 //     loader.style.display = "block";
 //     const response = await fetch(`http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${weatherAppId}`)
@@ -102,58 +104,33 @@ submit.addEventListener('click', (event) => {
 //     loader.style.display = "none";
 // }
 
-submit.addEventListener('click', () => {
-    geoCode(input.value);
-    event.preventDefault();
-});
 
-
-class Weather {
+class CurrentWeather {
     constructor(weatherInfo) {
-        this.lat = weatherInfo.lat;
-        this.lon = weatherInfo.lon;
         this.temp = weatherInfo.current.temp;
         this.dateCode = weatherInfo.current.dt;
         this.desc = weatherInfo.current.weather[0].description;
         this.sunriseCode = weatherInfo.current.sunrise;
         this.sunsetCode = weatherInfo.current.sunset;
         this.clouds = weatherInfo.current.clouds;
+        weatherInfo.current.rain ? this.rain = weatherInfo.current.rain["1h"] : null;
+        weatherInfo.current.snow ? this.snow = weatherInfo.current.snow["1h"] : null;
         this.humidity = weatherInfo.current.humidity;
         this.windSpeed = weatherInfo.current.wind_speed;
+        weatherInfo.current.wind_gust ? this.windGust = weatherInfo.current.wind_gust : this.windGust = this.windSpeed;
         this.windDeg = weatherInfo.current.wind_deg;
+        this.pressure = weatherInfo.current.pressure
+        weatherInfo.alerts ? this.alert = weatherInfo.alerts[0].description : null;
     }
-    show() {
-        this.convertDate();
-        this.convertSunrise();
-        this.convertSunset();
-        // this.getAlerts();
-        console.log(this);
-    }
-    convertDate() {
-        let unix = this.dateCode;
-        unix = unix * 1000;
-        const dateObj = new Date(unix);
-        const day = dateObj.toLocaleString("en-US", {day: "numeric"});
-        const month = dateObj.toLocaleString("en-US", {month: "long"}).substring(0,3);
-        const year = dateObj.toLocaleString("en-US", {year: "numeric"});
-        this.date = `${day} ${month} ${year}`;
-    }
-    convertSunrise() {
-        let unix = this.sunriseCode;
-        unix = unix * 1000;
-        const dateObj = new Date(unix);
-        const hour = dateObj.toLocaleString("UE", {hour: "numeric"});
-        const minute = dateObj.toLocaleString("UE", {minute: "numeric"});
-        this.sunrise = `Sunrise: ${hour}:${minute}`;
-    }
-    convertSunset() {
-        let unix = this.sunsetCode;
-        unix = unix * 1000;
-        const dateObj = new Date(unix);
-        const hour = dateObj.toLocaleString("UE", {hour: "numeric"});
-        const minute = dateObj.toLocaleString("UE", {minute: "numeric"});
-        this.sunset = `Sunset: ${hour}:${minute}`;
-    }
+    
+    // convertSunset() {
+    //     let unix = this.sunsetCode;
+    //     unix = unix * 1000;
+    //     const dateObj = new Date(unix);
+    //     const hour = dateObj.toLocaleString("UE", {hour: "numeric"});
+    //     const minute = dateObj.toLocaleString("UE", {minute: "numeric"});
+    //     this.sunset = `Sunset: ${hour}:${minute}`;
+    // }
     // getAlerts() {
     //     if(weatherInfo.alerts[0].description) {
     //         this.alert = weatherInfo.alerts[0].description;
@@ -161,13 +138,15 @@ class Weather {
     //     else
     //         return 0;
     // }
+    fillTemp(){
+        document.querySelector(".container-item__main-temp__temperature").innerHTML = this.temp;
+    }
 };
 
 const displayWeatherBlock = weatherInfo => {
     console.log(weatherInfo)
     startContainer.style.display = "none";
     body.style.display = "block";
-    // getCity(weatherInfo.lat, weatherInfo.lon);
-    const todayWeather = new Weather(weatherInfo);
-    todayWeather.show();
+    const todayWeather = new CurrentWeather(weatherInfo);
+    console.log(todayWeather);
 };
