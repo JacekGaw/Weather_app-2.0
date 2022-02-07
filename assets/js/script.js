@@ -107,11 +107,12 @@ submit.addEventListener('click', (event) => {
 
 class CurrentWeather {
     constructor(weatherInfo) {
-        this.temp = weatherInfo.current.temp;
-        this.dateCode = weatherInfo.current.dt;
+        this.temp = Math.round(weatherInfo.current.temp);
+        this.date = this.decode(weatherInfo.current.dt, "day");
+        this.time = this.decode(weatherInfo.current.dt, "hour");
         this.desc = weatherInfo.current.weather[0].description;
-        this.sunriseCode = weatherInfo.current.sunrise;
-        this.sunsetCode = weatherInfo.current.sunset;
+        this.sunrise = this.decode(weatherInfo.current.sunrise, "hour");
+        this.sunset = this.decode(weatherInfo.current.sunset, "hour");
         this.clouds = weatherInfo.current.clouds;
         weatherInfo.current.rain ? this.rain = weatherInfo.current.rain["1h"] : null;
         weatherInfo.current.snow ? this.snow = weatherInfo.current.snow["1h"] : null;
@@ -122,24 +123,54 @@ class CurrentWeather {
         this.pressure = weatherInfo.current.pressure
         weatherInfo.alerts ? this.alert = weatherInfo.alerts[0].description : null;
     }
-    
-    // convertSunset() {
-    //     let unix = this.sunsetCode;
-    //     unix = unix * 1000;
-    //     const dateObj = new Date(unix);
-    //     const hour = dateObj.toLocaleString("UE", {hour: "numeric"});
-    //     const minute = dateObj.toLocaleString("UE", {minute: "numeric"});
-    //     this.sunset = `Sunset: ${hour}:${minute}`;
-    // }
-    // getAlerts() {
-    //     if(weatherInfo.alerts[0].description) {
-    //         this.alert = weatherInfo.alerts[0].description;
-    //     }
-    //     else
-    //         return 0;
-    // }
+    getWeatherHourly(hours){
+        let hoursArray = [];
+        hours.forEach(hour => {
+            let hourInfo = {
+                "date": this.decode(hour.dt, "day-hour"),
+                "temp": Math.round(hour.temp),
+                "desc": hour.weather[0].description
+            }
+            hoursArray.push(hourInfo);
+        });
+        console.log(hoursArray);
+    }
+    getWeatherDaily(days){
+        let daysArray = [];
+        days.forEach(day => {
+            let dayInfo = {
+                "date": this.decode(day.dt, "day"),
+                "temp": Math.round(day.temp.day),
+                "desc": day.weather[0].description
+            }
+            daysArray.push(dayInfo);
+        });
+        console.log(daysArray);
+    }
     fillTemp(){
         document.querySelector(".container-item__main-temp__temperature").innerHTML = this.temp;
+    }
+    decode(code, period) {
+        let unix = code;
+        const dateObj = new Date(unix * 1000);
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const year = dateObj.getFullYear();
+        const month = months[dateObj.getMonth()];
+        const date = dateObj.getDate();
+        const hour = dateObj.getHours();
+        let min = dateObj.getMinutes();
+        min < 10 ? min = `0${min}` : min = min;
+        switch(period) {
+            case "day-hour":
+                return `${date} ${month} ${hour}:${min}`;
+                break;
+            case "day":
+                return `${date} ${month} ${year}`;
+                break;
+            case "hour":
+                return `${hour}:${min}`;
+                break;
+        }
     }
 };
 
@@ -148,5 +179,7 @@ const displayWeatherBlock = weatherInfo => {
     startContainer.style.display = "none";
     body.style.display = "block";
     const todayWeather = new CurrentWeather(weatherInfo);
+    todayWeather.getWeatherHourly(weatherInfo.hourly);
+    todayWeather.getWeatherDaily(weatherInfo.daily);
     console.log(todayWeather);
 };
